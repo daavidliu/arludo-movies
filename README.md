@@ -50,6 +50,7 @@ Reflection and future improvements:
   this is largely due to the frontend code inside the async function
   not being properly syncronised.
 - For scalability. The JSX in App.js can be further separated into
-  smaller components.
+  smaller components. With information passed between parent and child
+  through the use of props
 
 ///////////////////
