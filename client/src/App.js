@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 
+// style
 import './App.css';
-import MovieCard from './MovieCard';
+
+// images 
 import SearchIcon from './search.svg';
 import logo from './pngwing.com.png';
 
-const API_URL = 'localhost:5001';
+// components 
+import MovieCard from './MovieCard';
 
 function App() {
-
+    // initialise state variables 
     const [movies, setMovies] = useState([]);
     const [showtimes, setShowtimes] = useState([]);
     const [curShowtimes, setCurShowtimes] = useState([]);
@@ -17,50 +20,45 @@ function App() {
     const [rating, setRating] = useState('all');
 
     const searchMovies = async () => {
-        await console.log("searching movies: " + searchTerm);
+        // make the API call to backend
         const response = await fetch('/movies');
         const data = await response.json();
-        let filtered = await data.movies.filter((movie) => (containsString(movie.title, searchTerm)));
-        //console.log(filtered);
+
+        //filter according to search term
+        let filtered = await data.movies.filter((movie) => (containsString(movie.title, searchTerm))); 
         await setMovies(filtered);
         await setShowtimes(data.showtimes);
+
+        //filter the showtimes according to the selected theatre 
         const curShowtimes = await data.showtimes.filter(theatre => theatre.name === curTheatre)[0].showtimes;
         await setCurShowtimes(curShowtimes);
-        //console.log(curShowtimes);
         await filterMovies();
     };
 
+    // helper function to compare strings 
     function containsString(str1, str2) {
         const pattern = new RegExp(str2.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s/g, ''), 'i');
         const value = pattern.test(str1.replace(/\s/g, ''));
-        //console.log(str1 + " " + str2 + " : " + value)
         return value;
     }
 
-    //containsString('the amazing spider man', 'spiderman');
-
+    // helper function to filter movies by rating 
     const filterMovies = () => {
         if (rating !== 'all') {
-            //console.log(movies);
-            //console.log('filtering for ' + rating);
             let filtered = movies.filter((movie) => (movie.rating === rating));
             //console.log(filtered);
             setMovies(filtered);
         };
     };
 
+    // helper function to change rating 
     const changeRating = (change) => {
-        //console.log("this is the change function");
         if (change !== rating) {
             setRating(change);
-            //console.log('changing rating to ' + rating);
         } else if (change === rating) {
             setRating('all');
-            //console.log('changing rating to ' + rating);
         };
         //console.log('rating changed to ' + rating);
-        
-
     };
 
     useEffect(() => {
@@ -80,10 +78,6 @@ function App() {
                 <img 
                 src={SearchIcon}
                 alt="search"
-                onClick={()=> {
-                    //searchMovies(searchTerm);
-                    //console.log("search");
-                }}
                 />
             </div>
 

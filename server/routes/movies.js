@@ -1,4 +1,4 @@
-"use strict";
+"use strict"; // stric syntax 
 const express = require('express');
 let router = express.Router();
 
@@ -26,8 +26,6 @@ const jsonData2 = fs.readFileSync(filePath2, 'utf8');
 const parsedData2 = JSON.parse(jsonData2);
 const showtimes = parsedData2;
 
-//console.log(movies);
-
 module.exports = router;
 
 router
@@ -37,19 +35,4 @@ router
             movies,
             showtimes
         });
-    });
-
-router  
-    .route("/:title")
-    .get((req, res) => {
-        const { id } = req.params;
-        const { logo } = req.body;
-
-        if (!logo) {
-            res.status(418).send({message: 'we need a logo!'});
-        } else {
-            res.send({
-                tshirt: `tshit with your ${logo} and ID of ${id}`
-            });
-        }
     });
